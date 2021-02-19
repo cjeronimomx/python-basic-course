@@ -5,10 +5,15 @@ from config import logs
 
 log = logs.config_loggin()
 
+
 def get_headers():
     return {'Content-Type': os.getenv("JSON_HEADER"), 'Accept': os.getenv("JSON_HEADER"), 'Authorization': f'Bearer {os.getenv("TOKEN")}'}
 
+
 def check_status(id_bulk):
+    """
+    This function gets the status of the bulk passed by parameter
+    """
     log.debug(f"Check status bulk migration: {datetime.datetime.now()} ")
     status = None
 
@@ -30,6 +35,9 @@ def check_status(id_bulk):
 
 
 def create_bulk():
+    """
+    This function executes a new bulk creation
+    """
     log.debug(f"Create new bulk: {datetime.datetime.now()} ")
     id_bulk=None
     log.debug(f"Data: {get_data_bulk()}")
@@ -50,5 +58,9 @@ def create_bulk():
         log.error(resp.text)
     return id_bulk
 
+
 def get_data_bulk():
+    """
+    Payload for the service that creates new bulk
+    """
     return {"maxBinaries": int(os.getenv("MAX_BINARIES")), "sourceStorage": os.getenv("SOURCE_STORAGE"), "sourceContainer": os.getenv("SOURCE_CONTAINER"), "destinationStorage": os.getenv("DESTINATION_STORAGE")}
